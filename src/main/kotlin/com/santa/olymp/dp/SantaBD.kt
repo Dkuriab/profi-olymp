@@ -43,6 +43,8 @@ class SantaBDImpl : SantaBD {
         }
     }
 
+//    5857782468066454000
+//    5857782468066453225
     override fun addGroup(newGroup: Group): Long {
         isLocked.set(true)
         try {
@@ -63,17 +65,14 @@ class SantaBDImpl : SantaBD {
         }
     }
 
-//    4533039782749079600
-//    4533039782749079784
-
     private fun generateNextIdNotIn(list: List<Long>): Long {
         isLocked.set(true)
         try {
-            var nextId = abs(Random.nextLong())
-            while (nextId in list) {
-                nextId = abs(Random.nextLong())
+            var nextId = abs(Random.nextInt())
+            while (nextId.toLong() in list) {
+                nextId = abs(Random.nextInt())
             }
-            return nextId
+            return nextId.toLong()
         } finally {
             isLocked.set(false)
         }
@@ -81,8 +80,6 @@ class SantaBDImpl : SantaBD {
 
     override fun getGroup(id: Long): Group {
         isLocked.set(true)
-        println("LOGD: try to find: $id")
-        println("LOGD: groups: $listGroups")
         try {
             return listGroups.firstOrNull { it.groupId == id }?.let {
                 it.copy(
